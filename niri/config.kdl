@@ -1,0 +1,18 @@
+include "./cfg/animation.kdl"
+include "./cfg/autostart.kdl"
+include "./cfg/keybinds.kdl"
+include "./cfg/input.kdl"
+include "./cfg/display.kdl"
+include "./cfg/layout.kdl"
+include "./cfg/rules.kdl"
+include "./cfg/misc.kdl"
+
+// DMS Include Configs
+include "dms/outputs.kdl"
+include "dms/windowrules.kdl"
+include "dms/cursor.kdl"
+include "dms/layout.kdl"
+include "dms/input.kdl"
+include "dms/colors.kdl"
+include "dms/alttab.kdl"
+include "dms/binds.kdl"
