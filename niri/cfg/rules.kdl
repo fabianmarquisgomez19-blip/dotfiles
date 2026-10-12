@@ -20,6 +20,16 @@
        open-focused false
     }
 
+    // Discord / Vesktop: los botones minimizar/maximizar los dibuja la propia app
+    // (ventana Electron frameless). Niri no puede quitarlos con window-rule.
+    // Solución: en Vesktop Settings desactiva "Discord Titlebar" para usar frame
+    // nativo y que aplique prefer-no-csd (sin botones, solo borde de niri).
+    window-rule {
+        match app-id=r#"^(discord|vesktop)$"#
+        open-floating false
+        clip-to-geometry true
+    }
+
     layer-rule {
         match namespace="^quickshell$"
         place-within-backdrop true
