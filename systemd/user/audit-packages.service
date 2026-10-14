@@ -1,0 +1,8 @@
+[Unit]
+Description=Auditoria seguridad paquetes (Arch/CachyOS, rootless)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/fish -c 'audit-packages --timer'
+StandardOutput=append:%h/.local/state/audit-packages/last.log
+StandardError=append:%h/.local/state/audit-packages/last.log
