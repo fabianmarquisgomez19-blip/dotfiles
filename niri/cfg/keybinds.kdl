@@ -14,7 +14,7 @@ binds {
     Mod+B                               hotkey-overlay-title="Open Browser: firefox" { spawn "firefox"; }
 
     // --- DMS ---
-    Mod+D                               hotkey-overlay-title="Dashboard: DMS dash" { spawn "dms" "ipc" "call" "dash" "toggle" ""; }
+    Mod+A                               hotkey-overlay-title="Dashboard: DMS dash" { spawn "dms" "ipc" "call" "dash" "toggle" ""; }
     Mod+Shift+Return                    hotkey-overlay-title="Wallpaper: DMS dash" { spawn "dms" "ipc" "call" "dash" "toggle" "wallpaper"; }
     Mod+S                               hotkey-overlay-title="Control Center: DMS control-center" { spawn "dms" "ipc" "call" "control-center" "toggle"; }
     Mod+Shift+S                         hotkey-overlay-title="Settings: DMS settings" { spawn "dms" "ipc" "call" "settings" "focusOrToggle"; }
