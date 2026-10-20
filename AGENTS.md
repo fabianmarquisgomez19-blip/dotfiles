@@ -9,6 +9,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `niri/dms/*.kdl` -> `~/.config/niri/dms/` — GENERADO por DankMaterialShell, preferir cambiar desde la UI de DMS
 - `fish/config.fish`, `fish/fish_variables` -> `~/.config/fish/`
 - `DankMaterialShell/settings.json`, `clsettings.json` -> `~/.config/DankMaterialShell/`
+- `wireplumber/wireplumber.conf.d/*.conf` -> `~/.config/wireplumber/wireplumber.conf.d/` (ajustes de audio/PipeWire, p. ej. no suspender sink Bluetooth)
 
 `config.kdl` principal solo tiene `include`. No aplanar los includes.
 
@@ -21,6 +22,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `config.fish` hace `source /usr/share/cachyos-fish-config/cachyos-config.fish` — no quitar esa línea sin reemplazo.
 - No commitear secretos, tokens, `*.backup*`, cachés ni `fish_variables` con rutas de máquina si contienen datos sensibles. Revisar `git diff` antes de commit.
 - CachyOS = Arch-base: usar `pacman` / `paru`, `systemctl --user`. Nunca `apt`, `dnf`.
+- wireplumber: tras editar un `.conf`, `systemctl --user restart wireplumber` **corta el audio ~1 s** y puede desconectar dispositivos Bluetooth. Verificar con `journalctl --user -u wireplumber` que no haya errores de config.
 
 ## Flujo de trabajo
 
@@ -29,13 +31,16 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
   - `niri validate`
   - `fish -n ~/dotfiles/fish/config.fish`
   - `python3 -m json.tool ~/dotfiles/DankMaterialShell/settings.json > /dev/null`
+  - WirePlumber: no hay validador; reiniciar el servicio y revisar el journal por errores.
 3. Copiar al sistema (ejemplo):
   `cp ~/dotfiles/niri/config.kdl ~/.config/niri/config.kdl`
   `cp ~/dotfiles/niri/cfg/* ~/.config/niri/cfg/`
+  `cp ~/dotfiles/wireplumber/wireplumber.conf.d/*.conf ~/.config/wireplumber/wireplumber.conf.d/`
 4. Recargar sin cerrar sesión: `niri msg action load-config-file` o `niri msg action reload-config` según versión. Si falla, `niri validate` y revertir.
-5. Commit con mensaje claro: `niri: ...`, `fish: ...`, `dms: ...`.
+5. Commit con mensaje claro: `niri: ...`, `fish: ...`, `dms: ...`, `wireplumber: ...`.
 
 ## Dependencias
 
 - `niri`, `quickshell`, DankMaterialShell, `fish`, `paru`
 - Temas referenciados en settings: iconos `Tela-circle-blue`, cursor `Bibata-Modern-Classic`, fuente escalada `0.89`
+- Sonido de notificaciones DMS: usa los sonidos incluidos (`useSystemSoundTheme=false`). El tema `freedesktop` mapea la notificación a `dialog-information.oga` (47 ms, muy bajo).
