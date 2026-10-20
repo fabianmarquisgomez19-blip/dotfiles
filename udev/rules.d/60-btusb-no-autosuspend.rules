@@ -1,0 +1,5 @@
+# Intel 7260 Bluetooth (8087:07dc): no suspender el dispositivo USB.
+# El autosuspend del modulo btusb provoca microcortes y caidas del
+# transporte A2DP ("Missing completion reports ... adapter firmware bug?").
+# Nota: la clave de match correcta es ATTR{DEVTYPE}, no DEVTYPE.
+ACTION=="add|change", SUBSYSTEM=="usb", ATTR{DEVTYPE}=="usb_device", ATTR{idVendor}=="8087", ATTR{idProduct}=="07dc", TEST=="power/control", ATTR{power/control}="on"

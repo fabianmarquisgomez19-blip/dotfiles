@@ -10,6 +10,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `fish/config.fish`, `fish/fish_variables` -> `~/.config/fish/`
 - `DankMaterialShell/settings.json`, `clsettings.json` -> `~/.config/DankMaterialShell/`
 - `wireplumber/wireplumber.conf.d/*.conf` -> `~/.config/wireplumber/wireplumber.conf.d/` (ajustes de audio/PipeWire, p. ej. no suspender sink Bluetooth)
+- `udev/rules.d/*.rules` -> `/etc/udev/rules.d/` — requiere root; NO copiar con `cp` normal, usar `sudo`/`pkexec` (ver ejemplo abajo)
 
 `config.kdl` principal solo tiene `include`. No aplanar los includes.
 
@@ -23,6 +24,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - No commitear secretos, tokens, `*.backup*`, cachés ni `fish_variables` con rutas de máquina si contienen datos sensibles. Revisar `git diff` antes de commit.
 - CachyOS = Arch-base: usar `pacman` / `paru`, `systemctl --user`. Nunca `apt`, `dnf`.
 - wireplumber: tras editar un `.conf`, `systemctl --user restart wireplumber` **corta el audio ~1 s** y puede desconectar dispositivos Bluetooth. Verificar con `journalctl --user -u wireplumber` que no haya errores de config.
+- udev: las reglas van a `/etc/` (root). Validar sintaxis con `udevadm test /sys/<dispositivo>` — una clave de match inválida hace que udev **descarte la regla entera** en silencio (el log solo dice `Invalid key`).
 
 ## Flujo de trabajo
 
@@ -36,11 +38,13 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
   `cp ~/dotfiles/niri/config.kdl ~/.config/niri/config.kdl`
   `cp ~/dotfiles/niri/cfg/* ~/.config/niri/cfg/`
   `cp ~/dotfiles/wireplumber/wireplumber.conf.d/*.conf ~/.config/wireplumber/wireplumber.conf.d/`
+  `sudo cp ~/dotfiles/udev/rules.d/*.rules /etc/udev/rules.d/ && sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=usb --action=change`
 4. Recargar sin cerrar sesión: `niri msg action load-config-file` o `niri msg action reload-config` según versión. Si falla, `niri validate` y revertir.
-5. Commit con mensaje claro: `niri: ...`, `fish: ...`, `dms: ...`, `wireplumber: ...`.
+5. Commit con mensaje claro: `niri: ...`, `fish: ...`, `dms: ...`, `wireplumber: ...`, `udev: ...`.
 
 ## Dependencias
 
 - `niri`, `quickshell`, DankMaterialShell, `fish`, `paru`
 - Temas referenciados en settings: iconos `Tela-circle-blue`, cursor `Bibata-Modern-Classic`, fuente escalada `0.89`
 - Sonido de notificaciones DMS: usa los sonidos incluidos (`useSystemSoundTheme=false`). El tema `freedesktop` mapea la notificación a `dialog-information.oga` (47 ms, muy bajo).
+- Bluetooth: el adaptador es un Intel 7260 (`8087:07dc`) con ROM de 2013; su firmware no cumple el flow-control de A2DP (`Missing completion reports`). La regla udev de `udev/` le desactiva el autosuspend USB, que agravaba los microcortes.
