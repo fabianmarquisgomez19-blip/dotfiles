@@ -4,6 +4,9 @@
 
         background-color "transparent" // <- needed for DMS to set wallpaper
 
+        // Nueva ventana ocupa todo el ancho disponible, dejando gaps y barra
+        default-column-width { proportion 1.0; }
+
         preset-column-widths {
             proportion 0.33333
             proportion 0.5
