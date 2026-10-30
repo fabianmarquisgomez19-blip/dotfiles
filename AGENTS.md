@@ -45,6 +45,6 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 ## Dependencias
 
 - `niri`, `quickshell`, DankMaterialShell, `fish`, `paru`
-- Temas referenciados en settings: iconos `Tela-circle-blue`, cursor `Bibata-Modern-Classic`, fuente escalada `0.89`
+- Temas referenciados en settings: iconos `Tela-circle-blue`, cursor `Bibata-Modern-Classic`, `fontScale` global `1.0`, `controlCenterIconScale` `0.9`, barra con `iconScale` `1.1`
 - Sonido de notificaciones DMS: usa los sonidos incluidos (`useSystemSoundTheme=false`). El tema `freedesktop` mapea la notificación a `dialog-information.oga` (47 ms, muy bajo).
 - Bluetooth: el adaptador es un Intel 7260 (`8087:07dc`) con ROM de 2013; su firmware no cumple el flow-control de A2DP (`Missing completion reports`). La regla udev de `udev/` le desactiva el autosuspend USB, que agravaba los microcortes.
