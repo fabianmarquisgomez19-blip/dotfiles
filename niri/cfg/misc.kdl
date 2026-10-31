@@ -10,10 +10,8 @@
         XDG_SESSION_TYPE "wayland"
     }
 
-    cursor {
-        xcursor-theme "capitaine-cursors"
-        xcursor-size 24
-    }
+    // Cursor: lo gestiona DMS en dms/cursor.kdl (Bibata-Modern-Classic, size 19).
+    // No poner un bloque cursor aquí: se incluye después y lo sobreescribiría.
 
     blur {
         off
