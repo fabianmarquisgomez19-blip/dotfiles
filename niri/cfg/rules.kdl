@@ -1,5 +1,6 @@
+    // geometry-corner-radius lo fija DMS en dms/layout.kdl (12), que se
+    // incluye después y sobrescribe este bloque.
     window-rule {
-        geometry-corner-radius 20 // Set every window radius to 20
         clip-to-geometry true
     }
 

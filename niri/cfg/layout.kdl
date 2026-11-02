@@ -1,5 +1,6 @@
     layout {
-        gaps 11 // Gap between windows
+        // gaps: lo gestiona DMS en dms/layout.kdl (se incluye después y
+        // sobrescribe este bloque). Cambiarlo desde la UI de DMS.
         center-focused-column "never" // Don’t auto-center focused column
 
         background-color "transparent" // <- needed for DMS to set wallpaper
