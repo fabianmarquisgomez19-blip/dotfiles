@@ -1,0 +1,3 @@
+binds {
+    Mod+Z hotkey-overlay-title="Task Manager: DMS processlist" { spawn "dms" "ipc" "call" "processlist" "focusOrToggle"; }
+}

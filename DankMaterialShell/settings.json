@@ -55,7 +55,7 @@
     }
   },
   "fontFamily": "Comfortaa",
-  "fontScale": 1,
+  "fontScale": 0.9,
   "textRenderType": 1,
   "notificationSummaryFontSize": 10,
   "notificationBodyFontSize": 10,
@@ -156,7 +156,7 @@
       "widgetOutlineOpacity": 1,
       "widgetOutlineThickness": 1,
       "fontScale": 1,
-      "iconScale": 1.1,
+      "iconScale": 1.22,
       "autoHide": false,
       "autoHideStrict": false,
       "autoHideDelay": 250,
@@ -416,7 +416,7 @@
   "focusRingWidth": 1.5,
   "barInsetPaddingShared": 12,
   "widgetColorMode": "default",
-  "controlCenterIconScale": 0.9,
+  "controlCenterIconScale": 1,
   "scrollbarsEnabled": true,
   "blurBorderEnabled": false,
   "clockFormat": "12h",
@@ -436,5 +436,163 @@
     }
   },
   "foregroundLayerTransparency": 1,
-  "osdAlwaysShowValue": false
+  "osdAlwaysShowValue": false,
+  "containerSaturation": 100,
+  "floatingWindowTitleBars": true,
+  "blurLayerOutlineOpacity": 0,
+  "blurEnabled": false,
+  "blurBorderSeeded": true,
+  "blurForegroundLayers": true,
+  "controlCenterWidgets": [
+    {
+      "id": "user",
+      "enabled": true,
+      "w": 5,
+      "h": 1,
+      "col": 0,
+      "row": 0
+    },
+    {
+      "id": "settings",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true,
+      "col": 5,
+      "row": 0
+    },
+    {
+      "id": "lock",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true,
+      "col": 6,
+      "row": 0
+    },
+    {
+      "id": "power",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true,
+      "col": 7,
+      "row": 0
+    },
+    {
+      "id": "brightnessSlider",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "col": 0,
+      "row": 1
+    },
+    {
+      "id": "volumeSlider",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "col": 4,
+      "row": 1
+    },
+    {
+      "id": "wifi",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "col": 0,
+      "row": 2,
+      "small": true
+    },
+    {
+      "id": "bluetooth",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "col": 4,
+      "row": 2,
+      "small": true
+    },
+    {
+      "id": "audioOutput",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "col": 0,
+      "row": 3,
+      "small": true
+    },
+    {
+      "id": "audioInput",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "col": 4,
+      "row": 3,
+      "small": true
+    },
+    {
+      "id": "darkMode",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "col": 0,
+      "row": 4,
+      "small": true
+    },
+    {
+      "id": "nightMode",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "col": 1,
+      "row": 4,
+      "small": true
+    },
+    {
+      "id": "doNotDisturb",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "col": 2,
+      "row": 4,
+      "small": true
+    },
+    {
+      "id": "idleInhibitor",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "col": 3,
+      "row": 4,
+      "small": true
+    },
+    {
+      "id": "battery",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "col": 4,
+      "row": 4
+    },
+    {
+      "id": "runningApps",
+      "enabled": true,
+      "w": 7,
+      "h": 1,
+      "small": true,
+      "col": 0,
+      "row": 5
+    },
+    {
+      "id": "edit",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true,
+      "col": 7,
+      "row": 5
+    }
+  ],
+  "fontWeight": 400
 }
