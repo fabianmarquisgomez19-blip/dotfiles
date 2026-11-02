@@ -3,6 +3,8 @@ Description=Auditoria seguridad paquetes (Arch/CachyOS, rootless)
 
 [Service]
 Type=oneshot
+# rc=1 = hay actualizaciones pendientes (aviso, no fallo). rc=2 = CVEs: si falla.
+SuccessExitStatus=1
 ExecStart=/usr/bin/fish -c 'audit-packages --timer'
 StandardOutput=append:%h/.local/state/audit-packages/last.log
 StandardError=append:%h/.local/state/audit-packages/last.log
