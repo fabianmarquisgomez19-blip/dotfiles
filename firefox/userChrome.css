@@ -1,0 +1,16 @@
+/* userChrome.css: quita los botones de ventana (minimizar/maximizar/cerrar)
+ * de la barra de Firefox. Las "X" de cada pestaña no se tocan.
+ *
+ * Requiere toolkit.legacyUserProfileCustomizations.stylesheets = true
+ * (ver firefox/user.js) y reiniciar Firefox.
+ *
+ * Destino: ~/.config/mozilla/firefox/<perfil>/chrome/userChrome.css
+ * (Firefox 159 usa la ruta XDG, no ~/.mozilla).
+ *
+ * Cerrar ventana sin botón: Mod+Q (niri) o Ctrl+Shift+W.
+ */
+
+#titlebar-buttonbox-container,
+.titlebar-buttonbox-container {
+  display: none !important;
+}
