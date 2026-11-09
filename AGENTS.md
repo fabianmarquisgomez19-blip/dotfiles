@@ -6,18 +6,54 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 
 - `niri/config.kdl` -> `~/.config/niri/config.kdl`
 - `niri/cfg/*.kdl` -> `~/.config/niri/cfg/` (animation, autostart, keybinds, input, display, layout, rules, misc)
-- `niri/dms/*.kdl` -> `~/.config/niri/dms/` — GENERADO por DMS (paquete `dms-shell` 2.0, "Dux Shell"), preferir cambiar desde la UI de DMS
+- `niri/dms/*.kdl` -> `~/.config/niri/dms/` — GENERADO por DMS (`dux-shell` 2.1.1), preferir cambiar desde la UI de DMS
 - `fish/config.fish`, `fish/fish_variables` -> `~/.config/fish/`
-- `DankMaterialShell/settings.json`, `clsettings.json` -> `~/.config/DankMaterialShell/`
+- `fish/functions/*.fish` -> `~/.config/fish/functions/`
+- `DankMaterialShell/settings.json`, `clsettings.json`, `plugins.lock.json` -> `~/.config/dms/` (dux-shell >= 2.1; la ruta antigua `~/.config/DankMaterialShell/` ya no se usa)
+- `systemd/user/*` -> `~/.config/systemd/user/`
 - `wireplumber/wireplumber.conf.d/*.conf` -> `~/.config/wireplumber/wireplumber.conf.d/` (ajustes de audio/PipeWire, p. ej. no suspender sink Bluetooth)
 - `udev/rules.d/*.rules` -> `/etc/udev/rules.d/` — requiere root; NO copiar con `cp` normal, usar `sudo`/`pkexec` (ver ejemplo abajo)
 - `modprobe/*.conf` -> `/etc/modprobe.d/` — requiere root (parámetros de módulos, p. ej. `btusb`)
+- `dconf/wm-preferences.ini` -> dconf, ruta `/org/gnome/desktop/wm/preferences/` — NO es un archivo de `~/.config`. Aplicar con `dconf load /org/gnome/desktop/wm/preferences/ < dconf/wm-preferences.ini`. `button-layout=':'` quita los botones de ventana (min/max/cerrar) de las apps GTK3/GTK4 (Nautilus); afecta a todas ellas, niri no lo usa.
+- `firefox/userChrome.css`, `firefox/user.js` -> `~/.config/mozilla/firefox/<perfil>.default-release/` (`chrome/userChrome.css` y `user.js`) — Firefox 159+ usa la ruta XDG (`~/.config/mozilla`), no `~/.mozilla`; `user.js` activa `toolkit.legacyUserProfileCustomizations.stylesheets` y oculta los botones de ventana
+
+Nautilus/Firefox no tienen ajuste propio para ocultar botones y niri no dibuja
+títulos. En GTK4 no se pueden ocultar widgets por CSS (`display`/`visibility` no
+existen) y `~/.config/gtk-4.0/settings.ini` se ignora: GTK lee
+`org.gnome.desktop.wm.preferences button-layout`. Firefox se hace con
+userChrome.css. Cerrar ventanas sin botón: `Mod+Q` (niri), `Ctrl+Shift+W`
+(Firefox), `Ctrl+W` (Nautilus).
 
 `config.kdl` principal solo tiene `include`. No aplanar los includes.
 
 Los `include` de `dms/*` van **después** de `cfg/*`, así que DMS gana en valores
 escalares repetidos (gaps, geometría de bordes, colores...). No dupliques esos
 ajustes en `cfg/`: se cambian desde la UI de DMS.
+
+DMS arranca con `dms.service` (`systemctl --user`), enlazado en
+`niri.service.wants/`. No pongas `spawn-at-startup "dms run"` en
+`niri/cfg/autostart.kdl`: arrancaría dos instancias. Noctalia no forma parte del
+setup; si está instalado no debe autostartearse.
+
+DMS 2.1 genera un set completo de keybinds en `dms/binds.kdl`. Ese include está
+comentado en `config.kdl` a propósito: si se activa, pisa `cfg/keybinds.kdl`.
+Para gestionar keybinds desde la UI de DMS, descomenta el include y borra los
+binds equivalentes de `cfg/keybinds.kdl`.
+
+## Login (greeter)
+
+El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDDM:
+
+- `display-manager.service` -> `/usr/lib/systemd/system/greetd.service`
+- `sddm.service` está `masked` (no borrado, por si hay que volver)
+- `/etc/greetd/config.toml` ejecuta:
+  `dms-greeter --command niri --cache-dir /var/cache/dms-greeter -C /etc/greetd/niri/config.kdl`
+- `/etc/greetd/niri/{config.kdl,dms.kdl}` los genera `dms-greeter sync` (no editar a mano)
+- Tras cambiar tema/fuente/fondo en DMS: `dms-greeter sync` (pide sudo) y el slot
+  `users/fabian` es *live* (sigue a `~/.config/dms` sin re-sync)
+- Tras añadir el usuario al grupo `greeter` hace falta cerrar sesión para que aplique
+- Revertir a SDDM: `sudo systemctl unmask sddm && sudo systemctl enable sddm && sudo systemctl disable greetd`
+  (script: `~/dotfiles-backup-20261108_210456/greeter/revert-to-sddm.sh`)
 
 ## Reglas duras
 
@@ -43,6 +79,8 @@ ajustes en `cfg/`: se cambian desde la UI de DMS.
 3. Copiar al sistema (ejemplo):
   `cp ~/dotfiles/niri/config.kdl ~/.config/niri/config.kdl`
   `cp ~/dotfiles/niri/cfg/* ~/.config/niri/cfg/`
+  `cp ~/dotfiles/DankMaterialShell/*.json ~/.config/dms/` (dux-shell >= 2.1)
+  `cp ~/dotfiles/systemd/user/* ~/.config/systemd/user/ && systemctl --user daemon-reload`
   `cp ~/dotfiles/wireplumber/wireplumber.conf.d/*.conf ~/.config/wireplumber/wireplumber.conf.d/`
   `sudo cp ~/dotfiles/udev/rules.d/*.rules /etc/udev/rules.d/ && sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=usb --action=change`
   `sudo cp ~/dotfiles/modprobe/*.conf /etc/modprobe.d/` (los parámetros de módulo se aplican al recargar el módulo o al reiniciar)
@@ -51,7 +89,8 @@ ajustes en `cfg/`: se cambian desde la UI de DMS.
 
 ## Dependencias
 
-- `niri`, `quickshell`, DMS (`dms-shell` 2.0 / Dux Shell), `fish`, `paru`
+- `niri`, `quickshell`, DMS (`dux-shell` 2.1 / Dux Shell), `fish`, `paru`
+- Fuente `Comfortaa` (`ttf-comfortaa`), `arch-audit` (lo usa `audit-packages`), agentes polkit para operaciones root
 - Temas referenciados en settings: iconos `Tela-circle-blue`, cursor `Bibata-Modern-Classic`, `fontScale` global `0.9`, `controlCenterIconScale` `1.0`, barra con `iconScale` `1.22`
-- Sonido de notificaciones DMS: usa los sonidos incluidos (`useSystemSoundTheme=false`). El tema `freedesktop` mapea la notificación a `dialog-information.oga` (47 ms, muy bajo).
+- Sonido de notificaciones DMS: `useSystemSoundTheme=true` (tema `freedesktop`: la notificación mapea a `dialog-information.oga`, 47 ms, muy bajo).
 - Bluetooth: el adaptador es un Intel 7260 (`8087:07dc`) con ROM de 2013; su firmware no cumple el flow-control de A2DP (`Missing completion reports`). La regla udev de `udev/` y `modprobe/btusb-no-autosuspend.conf` le desactivan el autosuspend USB, que agravaba los microcortes. Al volver de suspensión el adaptador se reenumera (`hci0` -> `hci1`), recarga firmware y el transporte A2DP se corta: es una limitación del hardware.
