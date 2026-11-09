@@ -307,6 +307,7 @@
       "showOnLastDisplay": true,
       "position": 1,
       "mode": "compact",
+      "middleClickAction": "close",
       "taskbarAlign": "center",
       "widgetExpansion": "popout",
       "iconSize": 40,
@@ -594,5 +595,8 @@
       "row": 5
     }
   ],
-  "fontWeight": 400
+  "fontWeight": 400,
+  "density": "compact",
+  "interfaceStyle": "expressive",
+  "matugenSmartMode": false
 }
