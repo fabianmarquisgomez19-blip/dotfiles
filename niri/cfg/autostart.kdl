@@ -1,4 +1,7 @@
 // ────────────── Startup Applications ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
-    spawn-at-startup "dms run"
+    // DMS no se lanza aquí: lo arranca el servicio de usuario
+    // /usr/lib/systemd/user/dms.service (enlazado en
+    // ~/.config/systemd/user/niri.service.wants/).
+    // Si se añade "spawn-at-startup \"dms run\"" se arrancan dos instancias.

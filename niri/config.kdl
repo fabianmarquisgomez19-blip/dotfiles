@@ -15,4 +15,6 @@ include "dms/layout.kdl"
 include "dms/input.kdl"
 include "dms/colors.kdl"
 include "dms/alttab.kdl"
-include "dms/binds.kdl"
+// DMS 2.1 genera un set completo de keybinds en dms/binds.kdl que, al ir
+// después, pisaría cfg/keybinds.kdl. Mantenemos los binds del repo:
+// include "dms/binds.kdl"

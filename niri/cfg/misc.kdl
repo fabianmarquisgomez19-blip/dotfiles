@@ -10,8 +10,14 @@
         XDG_SESSION_TYPE "wayland"
     }
 
-    // Cursor: lo gestiona DMS en dms/cursor.kdl (Bibata-Modern-Classic, size 19).
-    // No poner un bloque cursor aquí: se incluye después y lo sobreescribiría.
+    // DMS 2.1.1 deja dms/cursor.kdl vacío (no lo genera al arrancar), así que
+    // el cursor se define aquí. Si una versión futura lo rellena, usará los
+    // mismos valores de ~/.config/dms/settings.json (Bibata-Modern-Classic, 19).
+    cursor {
+        xcursor-theme "Bibata-Modern-Classic"
+        xcursor-size 19
+        hide-when-typing
+    }
 
     blur {
         off
