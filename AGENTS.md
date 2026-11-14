@@ -10,6 +10,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `fish/config.fish`, `fish/fish_variables` -> `~/.config/fish/`
 - `fish/functions/*.fish` -> `~/.config/fish/functions/`
 - `DankMaterialShell/settings.json`, `clsettings.json`, `plugins.lock.json` -> `~/.config/dms/` (dux-shell >= 2.1; la ruta antigua `~/.config/DankMaterialShell/` ya no se usa)
+- `DankMaterialShell/i18n/*` -> `~/.config/dms/i18n/` — override de traducción al español: `es.json` completo (PR #4203, adaptado a es-419), `DCommon-es.json` y `dms-es-apply.sh`, que se ejecuta como `ExecStartPre` de `dms.service` vía `systemd/user/dms.service.d/i18n-es.conf`. Parchea la extracción de `$XDG_RUNTIME_DIR/dms-shell/<rev>` antes de arrancar el shell; se reaplica solo tras reinicios/actualizaciones.
 - `systemd/user/*` -> `~/.config/systemd/user/`
 - `systemd/system/*` -> `/etc/systemd/system/` — requiere root; unidades y drop-ins de sistema (p. ej. `var-cache.mount.d/lazy-unmount.conf`)
 - `wireplumber/wireplumber.conf.d/*.conf` -> `~/.config/wireplumber/wireplumber.conf.d/` (ajustes de audio/PipeWire, p. ej. no suspender sink Bluetooth)
@@ -81,6 +82,7 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
   `cp ~/dotfiles/niri/config.kdl ~/.config/niri/config.kdl`
   `cp ~/dotfiles/niri/cfg/* ~/.config/niri/cfg/`
   `cp ~/dotfiles/DankMaterialShell/*.json ~/.config/dms/` (dux-shell >= 2.1)
+  `cp -r ~/dotfiles/DankMaterialShell/i18n ~/.config/dms/ && chmod +x ~/.config/dms/i18n/dms-es-apply.sh`
   `cp ~/dotfiles/systemd/user/* ~/.config/systemd/user/ && systemctl --user daemon-reload`
   `sudo cp -r ~/dotfiles/systemd/system/* /etc/systemd/system/ && sudo systemctl daemon-reload`
   `cp ~/dotfiles/wireplumber/wireplumber.conf.d/*.conf ~/.config/wireplumber/wireplumber.conf.d/`
