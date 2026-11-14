@@ -5,6 +5,9 @@ Description=Auditoria seguridad paquetes (Arch/CachyOS, rootless)
 Type=oneshot
 # rc=1 = hay actualizaciones pendientes (aviso, no fallo). rc=2 = CVEs: si falla.
 SuccessExitStatus=1
-ExecStart=/usr/bin/fish -c 'audit-packages --timer'
-StandardOutput=append:%h/.local/state/audit-packages/last.log
-StandardError=append:%h/.local/state/audit-packages/last.log
+# systemd crea ~/.local/state/audit-packages (y exporta $STATE_DIRECTORY).
+# OJO: no usar StandardOutput=append:%S/audit-packages/... porque systemd abre
+# el redirect ANTES de crear el directorio -> falla con status=209/STDOUT.
+# Por eso el redirect va dentro del shell, que ya ve el directorio creado.
+StateDirectory=audit-packages
+ExecStart=/usr/bin/fish -c 'audit-packages --timer >> $STATE_DIRECTORY/last.log 2>&1'
