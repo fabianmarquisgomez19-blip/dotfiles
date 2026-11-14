@@ -11,6 +11,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `fish/functions/*.fish` -> `~/.config/fish/functions/`
 - `DankMaterialShell/settings.json`, `clsettings.json`, `plugins.lock.json` -> `~/.config/dms/` (dux-shell >= 2.1; la ruta antigua `~/.config/DankMaterialShell/` ya no se usa)
 - `systemd/user/*` -> `~/.config/systemd/user/`
+- `systemd/system/*` -> `/etc/systemd/system/` — requiere root; unidades y drop-ins de sistema (p. ej. `var-cache.mount.d/lazy-unmount.conf`)
 - `wireplumber/wireplumber.conf.d/*.conf` -> `~/.config/wireplumber/wireplumber.conf.d/` (ajustes de audio/PipeWire, p. ej. no suspender sink Bluetooth)
 - `udev/rules.d/*.rules` -> `/etc/udev/rules.d/` — requiere root; NO copiar con `cp` normal, usar `sudo`/`pkexec` (ver ejemplo abajo)
 - `modprobe/*.conf` -> `/etc/modprobe.d/` — requiere root (parámetros de módulos, p. ej. `btusb`)
@@ -81,6 +82,7 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
   `cp ~/dotfiles/niri/cfg/* ~/.config/niri/cfg/`
   `cp ~/dotfiles/DankMaterialShell/*.json ~/.config/dms/` (dux-shell >= 2.1)
   `cp ~/dotfiles/systemd/user/* ~/.config/systemd/user/ && systemctl --user daemon-reload`
+  `sudo cp -r ~/dotfiles/systemd/system/* /etc/systemd/system/ && sudo systemctl daemon-reload`
   `cp ~/dotfiles/wireplumber/wireplumber.conf.d/*.conf ~/.config/wireplumber/wireplumber.conf.d/`
   `sudo cp ~/dotfiles/udev/rules.d/*.rules /etc/udev/rules.d/ && sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=usb --action=change`
   `sudo cp ~/dotfiles/modprobe/*.conf /etc/modprobe.d/` (los parámetros de módulo se aplican al recargar el módulo o al reiniciar)
@@ -93,4 +95,5 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
 - Fuente `Comfortaa` (`ttf-comfortaa`), `arch-audit` (lo usa `audit-packages`), agentes polkit para operaciones root
 - Temas referenciados en settings: iconos `Tela-circle-blue`, cursor `Bibata-Modern-Classic`, `fontScale` global `0.9`, `controlCenterIconScale` `1.0`, barra con `iconScale` `1.22`
 - Sonido de notificaciones DMS: `useSystemSoundTheme=true` (tema `freedesktop`: la notificación mapea a `dialog-information.oga`, 47 ms, muy bajo).
+- `/var/cache` es un subvolumen btrfs aparte en `/etc/fstab`. Al apagar, el `plymouthd` del splash de apagado (`plymouth-reboot`/`plymouth-poweroff`) carga la fuente del tema `cachyos-bootanimation` (`Font=Inter`) vía Pango -> fontconfig, y fontconfig mapea `/var/cache/fontconfig/*.cache-12`; ese mmap hace que `umount` falle con EBUSY y salga `Failed unmounting /var/cache`. No es un fallo real (systemd-shutdown lo desmonta después), pero se silencia con `LazyUnmount=yes` en `systemd/system/var-cache.mount.d/lazy-unmount.conf`. No es Proton VPN ni un proceso con fds abiertos.
 - Bluetooth: el adaptador es un Intel 7260 (`8087:07dc`) con ROM de 2013; su firmware no cumple el flow-control de A2DP (`Missing completion reports`). La regla udev de `udev/` y `modprobe/btusb-no-autosuspend.conf` le desactivan el autosuspend USB, que agravaba los microcortes. Al volver de suspensión el adaptador se reenumera (`hci0` -> `hci1`), recarga firmware y el transporte A2DP se corta: es una limitación del hardware.
