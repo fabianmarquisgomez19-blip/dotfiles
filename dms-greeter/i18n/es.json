@@ -1,0 +1,77 @@
+{
+  "Authenticating...": {
+    "Authenticating...": "Autenticando…"
+  },
+  "Authentication error - try again": {
+    "Authentication error - try again": "Error de autenticación: inténtalo de nuevo"
+  },
+  "Authentication failed - attempt %1 of %2": {
+    "Authentication failed - attempt %1 of %2": "Autenticación fallida: intento %1 de %2"
+  },
+  "Authentication failed - lockout can occur": {
+    "Authentication failed - lockout can occur": "Autenticación fallida: la cuenta podría bloquearse"
+  },
+  "Authentication failed - try again": {
+    "Authentication failed - try again": "Autenticación fallida: inténtalo de nuevo"
+  },
+  "Auto-login": {
+    "Auto-login": "Inicio automático"
+  },
+  "Awaiting face authentication": {
+    "Awaiting face authentication": "Esperando reconocimiento facial"
+  },
+  "Awaiting fingerprint authentication": {
+    "Awaiting fingerprint authentication": "Esperando huella dactilar"
+  },
+  "Awaiting fingerprint or security key authentication": {
+    "Awaiting fingerprint or security key authentication": "Esperando huella dactilar o llave de seguridad"
+  },
+  "Awaiting security key authentication": {
+    "Awaiting security key authentication": "Esperando llave de seguridad"
+  },
+  "Back to user list": {
+    "Back to user list": "Volver a la lista de usuarios"
+  },
+  "Face recognition": {
+    "Face recognition": "Reconocimiento facial"
+  },
+  "Fingerprint": {
+    "Fingerprint": "Huella dactilar"
+  },
+  "Hide password": {
+    "Hide password": "Ocultar contraseña"
+  },
+  "Keyboard": {
+    "Keyboard": "Teclado"
+  },
+  "Logging in...": {
+    "Logging in...": "Iniciando sesión…"
+  },
+  "Login": {
+    "Login": "Iniciar sesión"
+  },
+  "Not listed?": {
+    "Not listed?": "¿No apareces en la lista?"
+  },
+  "Password...": {
+    "Password...": "Contraseña…"
+  },
+  "Power Options": {
+    "Power Options": "Opciones de energía"
+  },
+  "Security key": {
+    "Security key": "Llave de seguridad"
+  },
+  "Select user...": {
+    "Select user...": "Selecciona un usuario…"
+  },
+  "Show password": {
+    "Show password": "Mostrar contraseña"
+  },
+  "Too many failed attempts - account may be locked": {
+    "Too many failed attempts - account may be locked": "Demasiados intentos fallidos: la cuenta podría estar bloqueada"
+  },
+  "Username...": {
+    "Username...": "Nombre de usuario…"
+  }
+}

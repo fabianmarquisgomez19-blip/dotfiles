@@ -12,8 +12,9 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `DankMaterialShell/settings.json`, `clsettings.json`, `plugins.lock.json` -> `~/.config/dms/` (dux-shell >= 2.1; la ruta antigua `~/.config/DankMaterialShell/` ya no se usa)
 - `DankMaterialShell/i18n/*` -> `~/.config/dms/i18n/` — override de traducción al español: `es.json` completo (PR #4203, adaptado a es-419), `DCommon-es.json` y `dms-es-apply.sh`, que se ejecuta como `ExecStartPre` de `dms.service` vía `systemd/user/dms.service.d/i18n-es.conf`. Parchea la extracción de `$XDG_RUNTIME_DIR/dms-shell/<rev>` antes de arrancar el shell; se reaplica solo tras reinicios/actualizaciones.
 - `dux-files/i18n/*` -> `~/.config/dux-files/i18n/` — override de traducción es-419 de Dux Files (`dfiles`, paquete `dux-files-bin`): `duxfiles-es.json` (658/658 términos propios) y `dfiles-es-apply.sh`, que corre como **`ExecStartPost`** (con `--wait`) de `dfiles.service` vía `systemd/user/dfiles.service.d/i18n-es.conf`. No es `ExecStartPre` como DMS porque `dfiles` **reescribe** su extracción de `$XDG_RUNTIME_DIR/dfiles-shell/<rev>` en cada arranque; el script espera al proceso `qs -p <rev>` y parchea antes de que QML cargue las traducciones. Reutiliza `~/.config/dms/i18n/DCommon-es.json`. Requiere `dfiles.service` habilitado y enlazado en `niri.service.wants/`.
+- `dms-greeter/i18n/*` + `dms-greeter/install-es.sh` -> `/etc/greetd/i18n/` — override de traducción es-419 del **login** (DMS Greeter, paquete `dux-greeter-bin`). `es.json` cubre las 25 cadenas propias del greeter y `DCommon-es.json` las 130 de los widgets comunes (el original trae 4/25 y 52/130). Se instala con `sudo dms-greeter/install-es.sh`, que además deja `systemd/system/greetd.service.d/i18n-es.conf` (`ExecStartPre`) y parchea la revisión ya extraída de `/var/cache/dms-greeter/.cache/dms-greeter-shell/<rev>/`. Tras una actualización que cambie la revisión, el `ExecStartPre` solo la parchea en el arranque **siguiente** (cuando la carpeta ya existe): reaplicar una vez con `sudo /etc/greetd/i18n/dms-greeter-es-apply.sh` si no se quiere esperar.
 - `systemd/user/*` -> `~/.config/systemd/user/`
-- `systemd/system/*` -> `/etc/systemd/system/` — requiere root; unidades y drop-ins de sistema (p. ej. `var-cache.mount.d/lazy-unmount.conf`)
+- `systemd/system/*` -> `/etc/systemd/system/` — requiere root; unidades y drop-ins de sistema (p. ej. `var-cache.mount.d/lazy-unmount.conf`, `greetd.service.d/i18n-es.conf`)
 - `wireplumber/wireplumber.conf.d/*.conf` -> `~/.config/wireplumber/wireplumber.conf.d/` (ajustes de audio/PipeWire, p. ej. no suspender sink Bluetooth)
 - `udev/rules.d/*.rules` -> `/etc/udev/rules.d/` — requiere root; NO copiar con `cp` normal, usar `sudo`/`pkexec` (ver ejemplo abajo)
 - `modprobe/*.conf` -> `/etc/modprobe.d/` — requiere root (parámetros de módulos, p. ej. `btusb`)
@@ -55,6 +56,8 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
 - Tras cambiar tema/fuente/fondo en DMS: `dms-greeter sync` (pide sudo) y el slot
   `users/fabian` es *live* (sigue a `~/.config/dms` sin re-sync)
 - Tras añadir el usuario al grupo `greeter` hace falta cerrar sesión para que aplique
+- Traducción del login al español: ver `dms-greeter/i18n/*` en el mapa. El greeter **no** usa
+  `~/.config/dms/i18n`; su UI va embebida y se parchea en `/var/cache/dms-greeter/.cache/dms-greeter-shell/<rev>/`
 - Revertir a SDDM: `sudo systemctl unmask sddm && sudo systemctl enable sddm && sudo systemctl disable greetd`
   (script: `~/dotfiles-backup-20261108_210456/greeter/revert-to-sddm.sh`)
 

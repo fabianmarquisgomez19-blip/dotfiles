@@ -45,6 +45,9 @@ sudo install -m644 dotfiles/modprobe/*.conf /etc/modprobe.d/
 sudo udevadm control --reload-rules
 sudo udevadm trigger --subsystem-match=usb --action=change
 
+# greeter (login) en español: catálogos + drop-in ExecStartPre + parche del cache
+sudo dotfiles/dms-greeter/install-es.sh
+
 # dconf: quitar botones de ventana (min/max/cerrar) en apps GTK3/GTK4
 dconf load /org/gnome/desktop/wm/preferences/ < dotfiles/dconf/wm-preferences.ini
 
