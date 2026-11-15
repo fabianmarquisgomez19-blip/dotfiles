@@ -5,8 +5,9 @@
 # Uso: sudo ~/dotfiles-main/dms-greeter/install-es.sh
 #
 # Deja en /etc/greetd/i18n/ los catálogos y el script que aplica el parche,
-# instala el drop-in de greetd.service (ExecStartPre) y parchea la revisión
-# del cache ya extraída (si existe), sin esperar al siguiente arranque.
+# instala el drop-in de greetd.service (ExecStartPre + ExecStartPost --wait) y
+# parchea la revisión del cache ya extraída (si existe), sin esperar al
+# siguiente arranque.
 set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
