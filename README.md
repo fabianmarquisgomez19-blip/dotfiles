@@ -11,6 +11,17 @@ install -Dm644 dotfiles/niri/cfg/*.kdl ~/.config/niri/cfg/
 
 # DMS / dux-shell >= 2.1 (ruta nueva: ~/.config/dms, no DankMaterialShell)
 install -Dm644 dotfiles/DankMaterialShell/*.json ~/.config/dms/
+install -Dm644 dotfiles/DankMaterialShell/i18n/*.json ~/.config/dms/i18n/
+install -Dm755 dotfiles/DankMaterialShell/i18n/dms-es-apply.sh ~/.config/dms/i18n/
+
+# Dux Files: traducción es-419 (658 términos) + drop-in que la reaplica en cada arranque
+install -Dm644 dotfiles/dux-files/i18n/duxfiles-es.json ~/.config/dux-files/i18n/duxfiles-es.json
+install -Dm755 dotfiles/dux-files/i18n/dfiles-es-apply.sh ~/.config/dux-files/i18n/dfiles-es-apply.sh
+install -Dm644 dotfiles/systemd/user/dfiles.service.d/i18n-es.conf ~/.config/systemd/user/dfiles.service.d/
+mkdir -p ~/.config/systemd/user/niri.service.wants
+ln -sf /usr/lib/systemd/user/dfiles.service ~/.config/systemd/user/niri.service.wants/dfiles.service
+systemctl --user daemon-reload
+systemctl --user enable --now dfiles.service
 
 # fish
 install -Dm644 dotfiles/fish/config.fish ~/.config/fish/config.fish

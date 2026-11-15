@@ -11,6 +11,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `fish/functions/*.fish` -> `~/.config/fish/functions/`
 - `DankMaterialShell/settings.json`, `clsettings.json`, `plugins.lock.json` -> `~/.config/dms/` (dux-shell >= 2.1; la ruta antigua `~/.config/DankMaterialShell/` ya no se usa)
 - `DankMaterialShell/i18n/*` -> `~/.config/dms/i18n/` — override de traducción al español: `es.json` completo (PR #4203, adaptado a es-419), `DCommon-es.json` y `dms-es-apply.sh`, que se ejecuta como `ExecStartPre` de `dms.service` vía `systemd/user/dms.service.d/i18n-es.conf`. Parchea la extracción de `$XDG_RUNTIME_DIR/dms-shell/<rev>` antes de arrancar el shell; se reaplica solo tras reinicios/actualizaciones.
+- `dux-files/i18n/*` -> `~/.config/dux-files/i18n/` — override de traducción es-419 de Dux Files (`dfiles`, paquete `dux-files-bin`): `duxfiles-es.json` (658/658 términos propios) y `dfiles-es-apply.sh`, que corre como **`ExecStartPost`** (con `--wait`) de `dfiles.service` vía `systemd/user/dfiles.service.d/i18n-es.conf`. No es `ExecStartPre` como DMS porque `dfiles` **reescribe** su extracción de `$XDG_RUNTIME_DIR/dfiles-shell/<rev>` en cada arranque; el script espera al proceso `qs -p <rev>` y parchea antes de que QML cargue las traducciones. Reutiliza `~/.config/dms/i18n/DCommon-es.json`. Requiere `dfiles.service` habilitado y enlazado en `niri.service.wants/`.
 - `systemd/user/*` -> `~/.config/systemd/user/`
 - `systemd/system/*` -> `/etc/systemd/system/` — requiere root; unidades y drop-ins de sistema (p. ej. `var-cache.mount.d/lazy-unmount.conf`)
 - `wireplumber/wireplumber.conf.d/*.conf` -> `~/.config/wireplumber/wireplumber.conf.d/` (ajustes de audio/PipeWire, p. ej. no suspender sink Bluetooth)
@@ -69,6 +70,7 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
 - wireplumber: tras editar un `.conf`, `systemctl --user restart wireplumber` **corta el audio ~1 s** y puede desconectar dispositivos Bluetooth. Verificar con `journalctl --user -u wireplumber` que no haya errores de config.
 - udev: las reglas van a `/etc/` (root). Validar sintaxis con `udevadm test /sys/<dispositivo>` — una clave de match inválida hace que udev **descarte la regla entera** en silencio (el log solo dice `Invalid key`).
 - udev, caso real: `DEVTYPE` es una propiedad, no un atributo sysfs. Hay que usar `ENV{DEVTYPE}=="usb_device"`; con `ATTR{DEVTYPE}` la regla nunca matchea y no verás errores. Comprobar que el `udevadm test` muestre la escritura del `ATTR{...}` esperado.
+- dux-files: `dfiles` **reescribe** su extracción en `$XDG_RUNTIME_DIR/dfiles-shell/<rev>` en cada arranque, así que un `es.json` copiado antes de lanzarlo se pierde. El parche va como `ExecStartPost=... --wait` (espera a `qs -p <rev>`) y requiere `dfiles.service` habilitado; no lo cambies a `ExecStartPre`. Tras editar `duxfiles-es.json` o el script: copiar a `~/.config/dux-files/i18n/` y `systemctl --user restart dfiles`.
 
 ## Flujo de trabajo
 
@@ -77,19 +79,22 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
   - `niri validate`
   - `fish -n ~/dotfiles/fish/config.fish`
   - `python3 -m json.tool ~/dotfiles/DankMaterialShell/settings.json > /dev/null`
+  - `bash -n ~/dotfiles/dux-files/i18n/dfiles-es-apply.sh`
+  - `python3 -m json.tool ~/dotfiles/dux-files/i18n/duxfiles-es.json > /dev/null`
   - WirePlumber: no hay validador; reiniciar el servicio y revisar el journal por errores.
 3. Copiar al sistema (ejemplo):
   `cp ~/dotfiles/niri/config.kdl ~/.config/niri/config.kdl`
   `cp ~/dotfiles/niri/cfg/* ~/.config/niri/cfg/`
   `cp ~/dotfiles/DankMaterialShell/*.json ~/.config/dms/` (dux-shell >= 2.1)
   `cp -r ~/dotfiles/DankMaterialShell/i18n ~/.config/dms/ && chmod +x ~/.config/dms/i18n/dms-es-apply.sh`
+  `cp -r ~/dotfiles/dux-files/i18n ~/.config/dux-files/ && chmod +x ~/.config/dux-files/i18n/dfiles-es-apply.sh && systemctl --user restart dfiles`
   `cp ~/dotfiles/systemd/user/* ~/.config/systemd/user/ && systemctl --user daemon-reload`
   `sudo cp -r ~/dotfiles/systemd/system/* /etc/systemd/system/ && sudo systemctl daemon-reload`
   `cp ~/dotfiles/wireplumber/wireplumber.conf.d/*.conf ~/.config/wireplumber/wireplumber.conf.d/`
   `sudo cp ~/dotfiles/udev/rules.d/*.rules /etc/udev/rules.d/ && sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=usb --action=change`
   `sudo cp ~/dotfiles/modprobe/*.conf /etc/modprobe.d/` (los parámetros de módulo se aplican al recargar el módulo o al reiniciar)
 4. Recargar sin cerrar sesión: `niri msg action load-config-file` o `niri msg action reload-config` según versión. Si falla, `niri validate` y revertir.
-5. Commit con mensaje claro: `niri: ...`, `fish: ...`, `dms: ...`, `wireplumber: ...`, `udev: ...`.
+5. Commit con mensaje claro: `niri: ...`, `fish: ...`, `dms: ...`, `dux-files: ...`, `wireplumber: ...`, `udev: ...`.
 
 ## Dependencias
 
