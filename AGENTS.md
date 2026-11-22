@@ -39,10 +39,11 @@ DMS arranca con `dms.service` (`systemctl --user`), enlazado en
 `niri/cfg/autostart.kdl`: arrancaría dos instancias. Noctalia no forma parte del
 setup; si está instalado no debe autostartearse.
 
-DMS 2.1 genera un set completo de keybinds en `dms/binds.kdl`. Ese include está
-comentado en `config.kdl` a propósito: si se activa, pisa `cfg/keybinds.kdl`.
-Para gestionar keybinds desde la UI de DMS, descomenta el include y borra los
-binds equivalentes de `cfg/keybinds.kdl`.
+DMS 2.1 genera un set completo de keybinds en `dms/binds.kdl`, incluido en
+`config.kdl` y con prioridad sobre `cfg/keybinds.kdl`. `cfg/keybinds.kdl` solo
+conserva los binds propios que DMS no genera (apps, screenshots, mover a
+workspaces...). Si cambias keybinds desde la UI de DMS, no dupliques en `cfg/`
+los que ya genere `dms/binds.kdl`.
 
 ## Login (greeter)
 
