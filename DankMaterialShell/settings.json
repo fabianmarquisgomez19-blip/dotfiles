@@ -134,11 +134,6 @@
         {
           "id": "notificationButton",
           "enabled": false
-        },
-        {
-          "id": "systemUpdate",
-          "enabled": true,
-          "hideWhenIdle": true
         }
       ],
       "spacing": 0,
@@ -580,53 +575,9 @@
       "small": true
     },
     {
-      "id": "darkMode",
-      "enabled": true,
-      "w": 1,
-      "h": 1,
-      "col": 0,
-      "row": 4,
-      "small": true
-    },
-    {
-      "id": "nightMode",
-      "enabled": true,
-      "w": 1,
-      "h": 1,
-      "col": 1,
-      "row": 4,
-      "small": true
-    },
-    {
-      "id": "doNotDisturb",
-      "enabled": true,
-      "w": 1,
-      "h": 1,
-      "col": 2,
-      "row": 4,
-      "small": true
-    },
-    {
-      "id": "idleInhibitor",
-      "enabled": true,
-      "w": 1,
-      "h": 1,
-      "col": 3,
-      "row": 4,
-      "small": true
-    },
-    {
-      "id": "battery",
-      "enabled": true,
-      "w": 4,
-      "h": 1,
-      "col": 4,
-      "row": 4
-    },
-    {
       "id": "runningApps",
       "enabled": true,
-      "w": 7,
+      "w": 8,
       "h": 1,
       "small": true,
       "col": 0,
@@ -639,7 +590,43 @@
       "h": 1,
       "small": true,
       "col": 7,
-      "row": 5
+      "row": 4
+    },
+    {
+      "id": "darkMode",
+      "enabled": true,
+      "w": 1.5,
+      "h": 1,
+      "small": true,
+      "col": 4.5,
+      "row": 4
+    },
+    {
+      "id": "nightMode",
+      "enabled": true,
+      "w": 1.5,
+      "h": 1,
+      "small": true,
+      "col": 3,
+      "row": 4
+    },
+    {
+      "id": "doNotDisturb",
+      "enabled": true,
+      "w": 1.5,
+      "h": 1,
+      "small": true,
+      "col": 1.5,
+      "row": 4
+    },
+    {
+      "id": "idleInhibitor",
+      "enabled": true,
+      "w": 1.5,
+      "h": 1,
+      "small": true,
+      "col": 0,
+      "row": 4
     }
   ],
   "fontWeight": 400,
