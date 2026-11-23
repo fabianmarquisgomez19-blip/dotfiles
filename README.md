@@ -2,6 +2,9 @@
 
 Repo manual. Estructura espejo de `~/.config`.
 
+Aplica todo el flujo de "Restaurar" con `./install.sh`; con `--dry-run`
+muestra qué copiaría y qué activaría, sin tocar nada.
+
 ## Restaurar
 
 ```fish
