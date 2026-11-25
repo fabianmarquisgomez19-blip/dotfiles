@@ -45,6 +45,11 @@ for f in "$REPO"/niri/cfg/*.kdl; do
     cpf "$f" "$HOME/.config/niri/cfg/$(basename "$f")"
 done
 
+echo "== entorno (environment.d) =="
+for f in "$REPO"/environment.d/*.conf; do
+    cpf "$f" "$HOME/.config/environment.d/$(basename "$f")"
+done
+
 echo "== DMS / dux-shell >= 2.1 =="
 for f in "$REPO"/DankMaterialShell/*.json; do
     cpf "$f" "$HOME/.config/dms/$(basename "$f")"
