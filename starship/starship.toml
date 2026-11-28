@@ -1,0 +1,28 @@
+# Prompt de fish — paquete `starship` (repo extra).
+# Se activa con `starship init fish | source` al final de fish/config.fish.
+# Glifos: alacritty usa family "monospace" (Noto Sans Mono), que no trae
+# símbolos Nerd Font; alacritty hace fallback vía fontconfig, así que se
+# dibujan desde Adwaita Mono / *Nerd Font*.
+
+format = """
+$directory$git_branch$git_status$cmd_duration$line_break$character"""
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+
+[git_branch]
+symbol = "\ue0a0"
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+
+[cmd_duration]
+min_time = 2000
+style = "bold yellow"

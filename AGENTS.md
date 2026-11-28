@@ -9,6 +9,7 @@ Repo manual (sin stow/chezmoi). Los archivos aquí son copia de `~/.config`.
 - `niri/dms/*.kdl` -> `~/.config/niri/dms/` — GENERADO por DMS (`dux-shell` 2.1.1), preferir cambiar desde la UI de DMS
 - `fish/config.fish`, `fish/fish_variables` -> `~/.config/fish/`
 - `fish/functions/*.fish` -> `~/.config/fish/functions/`
+- `starship/starship.toml` -> `~/.config/starship.toml` — prompt de fish, paquete `starship` de `extra` (instalado con `pacman`, **no** con el script `curl` que deja `/usr/local/bin/starship` huérfano). Se activa con `starship init fish | source` al final de `fish/config.fish`, después del `source` de CachyOS para ganar al prompt por defecto de fish. Alacritty usa `family = "monospace"` (Noto Sans Mono, sin glifos Nerd Font) pero alacritty hace fallback vía fontconfig, así que los símbolos se dibujan desde `Adwaita Mono` / `*Nerd Font*`.
 - `DankMaterialShell/settings.json`, `clsettings.json`, `plugins.lock.json` -> `~/.config/dms/` (dux-shell >= 2.1; la ruta antigua `~/.config/DankMaterialShell/` ya no se usa)
 - `DankMaterialShell/i18n/*` -> `~/.config/dms/i18n/` — override de traducción al español: `es.json` completo (PR #4203, adaptado a es-419), `DCommon-es.json` y `dms-es-apply.sh`, que se ejecuta como `ExecStartPre` de `dms.service` vía `systemd/user/dms.service.d/i18n-es.conf`. Parchea la extracción de `$XDG_RUNTIME_DIR/dms-shell/<rev>` antes de arrancar el shell; se reaplica solo tras reinicios/actualizaciones.
 - `dux-files/i18n/*` -> `~/.config/dux-files/i18n/` — override de traducción es-419 de Dux Files (`dfiles`, paquete `dux-files-bin`): `duxfiles-es.json` (658/658 términos propios) y `dfiles-es-apply.sh`, que corre como **`ExecStartPost`** (con `--wait`) de `dfiles.service` vía `systemd/user/dfiles.service.d/i18n-es.conf`. No es `ExecStartPre` como DMS porque `dfiles` **reescribe** su extracción de `$XDG_RUNTIME_DIR/dfiles-shell/<rev>` en cada arranque; el script espera al proceso `qs -p <rev>` y parchea antes de que QML cargue las traducciones. Reutiliza `~/.config/dms/i18n/DCommon-es.json`. Requiere `dfiles.service` habilitado y enlazado en `niri.service.wants/`.
@@ -84,6 +85,7 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
 2. Validar:
   - `niri validate`
   - `fish -n ~/dotfiles/fish/config.fish`
+  - `starship print-config > /dev/null` (valida `starship/starship.toml`)
   - `python3 -m json.tool ~/dotfiles/DankMaterialShell/settings.json > /dev/null`
   - `bash -n ~/dotfiles/dux-files/i18n/dfiles-es-apply.sh`
   - `python3 -m json.tool ~/dotfiles/dux-files/i18n/duxfiles-es.json > /dev/null`
@@ -91,6 +93,7 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
 3. Copiar al sistema (ejemplo):
   `cp ~/dotfiles/niri/config.kdl ~/.config/niri/config.kdl`
   `cp ~/dotfiles/niri/cfg/* ~/.config/niri/cfg/`
+  `cp ~/dotfiles-main/starship/starship.toml ~/.config/starship.toml`
   `cp ~/dotfiles/DankMaterialShell/*.json ~/.config/dms/` (dux-shell >= 2.1)
   `cp -r ~/dotfiles/DankMaterialShell/i18n ~/.config/dms/ && chmod +x ~/.config/dms/i18n/dms-es-apply.sh`
   `cp -r ~/dotfiles/dux-files/i18n ~/.config/dux-files/ && chmod +x ~/.config/dux-files/i18n/dfiles-es-apply.sh && systemctl --user restart dfiles`
@@ -104,7 +107,7 @@ El display manager es **greetd** con **DMS Greeter** (`dux-greeter-bin`), no SDD
 
 ## Dependencias
 
-- `niri`, `quickshell`, DMS (`dux-shell` 2.1 / Dux Shell), `fish`, `paru`
+- `niri`, `quickshell`, DMS (`dux-shell` 2.1 / Dux Shell), `fish`, `paru`, `starship` (prompt de fish, `extra`)
 - Fuente `Comfortaa` (`ttf-comfortaa`), `arch-audit` (lo usa `audit-packages`), agentes polkit para operaciones root
 - Temas referenciados en settings: iconos `Tela-circle-blue`, cursor `Bibata-Modern-Classic`, `fontScale` global `0.9`, `controlCenterIconScale` `1.0`, barra con `iconScale` `1.22`
 - Sonido de notificaciones DMS: `useSystemSoundTheme=true` (tema `freedesktop`: la notificación mapea a `dialog-information.oga`, 47 ms, muy bajo).
